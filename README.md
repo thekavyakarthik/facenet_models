@@ -27,7 +27,8 @@ python setup.py develop
 ``` python
 from facenet_models import FacenetModel
 
-# this will download the pretrained weights, which should take just a few seconds
+# this will download the pretrained weights (if they haven't already been fetched)
+# which should take just a few seconds
 model = FacenetModel()
 
 # detect all faces in an image
