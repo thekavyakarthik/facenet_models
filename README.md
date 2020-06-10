@@ -64,8 +64,7 @@ Tuple[np.ndarray shape=(N, 4), np.ndarray shape=(N,), np.ndarray shape=(N, 5)]
 
 
 
-
-compute_descriptors(image, boxes):
+compute_descriptors(image, boxes)
 
 Compute descriptor vectors for the faces contained in ``boxes``.
 
