@@ -9,6 +9,6 @@ if __name__ == "__main__":
         description="Manages facenet_pytorch's face detection/recognition models",
         license="MIT",
         platforms=["Windows", "Linux", "Mac OS-X", "Unix"],
-        packages=find_packages(where="src/"),
+        packages=find_packages(where="src"),
         package_dir={"": "src"},
     )
