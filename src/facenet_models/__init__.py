@@ -5,10 +5,18 @@ from facenet_pytorch.models.utils.detect_face import crop_resize
 
 
 class FacenetModel:
-    def __init__(self):
+    def __init__(self, device=None):
+        if device is None:
+            self._device = "cuda" if torch.cuda.is_available() else "cpu"
+        else:
+            if device.lower() not in {"cuda", "cpu"}:
+                raise ValueError(f"Expected `device` to be one of (None, 'cuda', 'cpu') but got {device}")
+            if device.lower() == "cuda" and not torch.cuda.is_available():
+                print("Cuda is not available; falling back to CPU")
+                device = "cpu"
+            self._device = device.lower()
         self._mtcnn = MTCNN()
-        self._resnet = InceptionResnetV1(pretrained="vggface2")
-        self._resnet.eval()
+        self._resnet = InceptionResnetV1(pretrained="vggface2", device=self._device).eval()
 
     def detect(self, image):
         """ Detect faces in an image.
@@ -47,4 +55,4 @@ class FacenetModel:
         crops = [crop_resize(image, [int(max(0, coord)) for coord in box], 160) for box in boxes]
         crops = (torch.tensor(crops).float() - 127.5) / 128
         with torch.no_grad():
-            return self._resnet(crops.permute(0, 3, 1, 2)).numpy()
+            return self._resnet(crops.permute(0, 3, 1, 2).to(self._device)).cpu().numpy()
