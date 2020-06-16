@@ -4,20 +4,40 @@ This is a convenience package for making available [facenet-pytorch](https://git
 
 ## Installation instructions 
 
-Install OpenCV:
+
+First, create and switch to a new Anaconda environment.
 
 ```
-pip install opencv-python
+conda create -n facenet
+conda activate facenet
 ```
 
-then install facenet-pytorch:
+Install numpy, matplotlib, and jupyter:
 
+```
+conda install numpy matplotlib jupyter
+```
+
+Next, install PyTorch. 
+
+Windows and Linux installation:
+```
+conda install pytorch torchvision cudatoolkit=10.2 -c pytorch
+```
+
+MacOS installation:
+```
+conda install pytorch torchvision -c pytorch
+```
+
+Next, install [OpenCV and the Camera package](https://github.com/cogworksbwsi/camera) by following the instructions in that repo.
+
+Install facenet-pytorch:
 ```
 pip install facenet-pytorch
 ```
 
-Clone facenet_models, navigate to the resulting directory, and run
-
+Finally, clone this repo, navigate into it, and run
 ```
 python setup.py develop
 ```
