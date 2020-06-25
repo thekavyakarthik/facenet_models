@@ -22,7 +22,7 @@ Next, install PyTorch.
 
 Windows and Linux installation:
 ```
-conda install pytorch torchvision cudatoolkit=10.2 -c pytorch
+conda install pytorch torchvision cpuonly -c pytorch
 ```
 
 MacOS installation:
@@ -102,3 +102,10 @@ np.ndarray, shape=(N, 128)
     The descriptor vectors, where N is the number of faces.
 """
 ```
+
+## GPU usage
+
+The installation instructions above assume no GPU is present. If you have a GPU in your machine and
+would like to use it to speed up computation, install the GPU version of PyTorch; this code will
+automatically make use of the GPU. See [PyTorch's website](https://pytorch.org/get-started/locally/)
+for installing the GPU version on your machine.
