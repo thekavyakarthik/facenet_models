@@ -31,6 +31,7 @@ class FacenetModel:
         Tuple[np.ndarray shape=(N, 4), np.ndarray shape=(N,), np.ndarray shape=(N, 5)]
             (boxes, probabilities, landmarks) where:
             - boxes is a shape-(N, 4) array of boxes, where N is the number of faces detected in the image.
+              Each box is represented as (left, top, right, bottom).
             - probabilities is a shape-(N,) array of probabilities corresponding to each detected face.
             - landmarks is a shape-(N, 5) arrays of facial landmarks corresponding to each detected face.
         """
@@ -45,7 +46,8 @@ class FacenetModel:
             The image in which to detect faces.
 
         boxes : np.ndarray, shape=(N, 4)
-            The bounding boxes containing the faces for which to compute descriptors.
+            The bounding boxes containing the faces for which to compute descriptors. The boxes should be
+            given as (left, top, right, bottom).
 
         Returns
         -------
