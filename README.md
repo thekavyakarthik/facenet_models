@@ -4,6 +4,8 @@ This is a convenience package for making available [facenet-pytorch](https://git
 
 ## Installing in a Pre-Existing Python Environment (Coggies, follow these instructions!)
 
+Make sure the appropriate conda environment is active in your terminal.
+
 Clone this repo, navigate into it, and run
 
 ```shell
