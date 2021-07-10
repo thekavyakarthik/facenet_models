@@ -2,7 +2,15 @@
 
 This is a convenience package for making available [facenet-pytorch](https://github.com/timesler/facenet-pytorch)'s trained face recognition model, which achieves state-of-the-art face recognition results.
 
-## Installation instructions 
+## Installing in a Pre-Existing Python Environment (Coggies, follow these instructions!)
+
+Clone this repo, navigate into it, and run
+
+```shell
+pip install -e .
+```
+
+## Installation Instructions for Running the Tutorial (Coggies, don't do these steps)
 
 
 First, create and switch to a new Anaconda environment.
@@ -39,7 +47,7 @@ pip install facenet-pytorch
 
 Finally, clone this repo, navigate into it, and run
 ```
-python setup.py develop
+pip install -e .
 ```
 
 ## Usage
