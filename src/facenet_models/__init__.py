@@ -15,7 +15,7 @@ class _Detections(NamedTuple):
 
 
 class FacenetModel:
-    def __init__(self, device: Optional[str, torch.device] = None):
+    def __init__(self, device: Optional[str] = None):
         if device is None:
             self._device = "cuda" if torch.cuda.is_available() else "cpu"
         else:
