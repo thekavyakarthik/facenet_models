@@ -1,25 +1,39 @@
+from typing import NamedTuple, Optional
+
 import numpy as np
 import torch
 from facenet_pytorch import MTCNN, InceptionResnetV1
 from facenet_pytorch.models.utils.detect_face import crop_resize
 
+__all__ = ["FacenetModel"]
+
+
+class _Detections(NamedTuple):
+    boxes: np.ndarray
+    probabilities: np.ndarray
+    face_landmarks: np.ndarray
+
 
 class FacenetModel:
-    def __init__(self, device=None):
+    def __init__(self, device: Optional[str, torch.device] = None):
         if device is None:
             self._device = "cuda" if torch.cuda.is_available() else "cpu"
         else:
             if device.lower() not in {"cuda", "cpu"}:
-                raise ValueError(f"Expected `device` to be one of (None, 'cuda', 'cpu') but got {device}")
+                raise ValueError(
+                    f"Expected `device` to be one of (None, 'cuda', 'cpu') but got {device}"
+                )
             if device.lower() == "cuda" and not torch.cuda.is_available():
                 print("Cuda is not available; falling back to CPU")
                 device = "cpu"
             self._device = device.lower()
         self._mtcnn = MTCNN()
-        self._resnet = InceptionResnetV1(pretrained="vggface2", device=self._device).eval()
+        self._resnet = InceptionResnetV1(
+            pretrained="vggface2", device=self._device
+        ).eval()
 
-    def detect(self, image):
-        """ Detect faces in an image.
+    def detect(self, image: np.ndarray) -> _Detections:
+        """Detect faces in an image.
 
         Parameters
         ----------
@@ -35,10 +49,13 @@ class FacenetModel:
             - probabilities is a shape-(N,) array of probabilities corresponding to each detected face.
             - landmarks is a shape-(N, 5) arrays of facial landmarks corresponding to each detected face.
         """
-        return self._mtcnn.detect(np.ascontiguousarray(image), landmarks=True)
+        boxes, probs, landmarks = self._mtcnn.detect(
+            np.ascontiguousarray(image), landmarks=True
+        )
+        return _Detections(boxes=boxes, probabilities=probs, face_landmarks=landmarks)
 
-    def compute_descriptors(self, image, boxes):
-        """ Compute descriptor vectors for the faces contained in ``boxes``.
+    def compute_descriptors(self, image: np.ndarray, boxes: np.ndarray) -> np.ndarray:
+        """Compute descriptor vectors for the faces contained in ``boxes``.
 
         Parameters
         ----------
@@ -51,10 +68,15 @@ class FacenetModel:
 
         Returns
         -------
-        np.ndarray, shape=(N, 128)
+        np.ndarray, shape=(N, 512)
             The descriptor vectors, where N is the number of faces.
         """
-        crops = [crop_resize(image, [int(max(0, coord)) for coord in box], 160) for box in boxes]
+        crops = [
+            crop_resize(image, [int(max(0, coord)) for coord in box], 160)
+            for box in boxes
+        ]
         crops = (torch.tensor(crops).float() - 127.5) / 128
         with torch.no_grad():
-            return self._resnet(crops.permute(0, 3, 1, 2).to(self._device)).cpu().numpy()
+            return (
+                self._resnet(crops.permute(0, 3, 1, 2).to(self._device)).cpu().numpy()
+            )
