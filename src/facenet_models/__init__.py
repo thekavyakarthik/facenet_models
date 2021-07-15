@@ -37,7 +37,7 @@ class FacenetModel:
 
         Parameters
         ----------
-        image : np.ndarray, shape=(R, C, 3)
+        image : np.ndarray, shape=(H, W, 3)
             The image in which to detect faces.
 
         Returns
@@ -59,7 +59,7 @@ class FacenetModel:
 
         Parameters
         ----------
-        image : np.ndarray, shape=(R, C, 3)
+        image : np.ndarray, shape=(H, W, 3)
             The image in which to detect faces.
 
         boxes : np.ndarray, shape=(N, 4)
