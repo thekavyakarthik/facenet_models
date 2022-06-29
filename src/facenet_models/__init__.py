@@ -71,10 +71,10 @@ class FacenetModel:
         np.ndarray, shape=(N, 512)
             The descriptor vectors, where N is the number of faces.
         """
-        crops = [
-            crop_resize(image, [int(max(0, coord)) for coord in box], 160)
-            for box in boxes
-        ]
+        crops = np.array(
+            [crop_resize(image, [int(max(0, coord)) for coord in box], 160)
+            for box in boxes], dtype='int32'
+            )
         crops = (torch.tensor(crops).float() - 127.5) / 128
         with torch.no_grad():
             return (
