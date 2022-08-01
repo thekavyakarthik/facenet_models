@@ -15,19 +15,20 @@ class _Detections(NamedTuple):
 
 
 class FacenetModel:
-    def __init__(self, device: Optional[str] = None):
-        if device is None:
-            self._device = "cuda" if torch.cuda.is_available() else "cpu"
-        else:
-            if device.lower() not in {"cuda", "cpu"}:
-                raise ValueError(
-                    f"Expected `device` to be one of (None, 'cuda', 'cpu') but got {device}"
-                )
-            if device.lower() == "cuda" and not torch.cuda.is_available():
-                print("Cuda is not available; falling back to CPU")
-                device = "cpu"
-            self._device = device.lower()
-        self._mtcnn = MTCNN()
+    def __init__(self, device: str = "cpu"):
+        """
+        Parameters
+        ----------
+        device : str
+            Indicates the device to place both models. 
+            E.g. 'cuda:0' will place the model on GPU 0.
+            
+            These models will automatically place images on the
+            appropriate device during their forwards passes."""
+
+        self._device = device
+        self._device = device.lower()
+        self._mtcnn = MTCNN(device=self._device)
         self._resnet = InceptionResnetV1(
             pretrained="vggface2", device=self._device
         ).eval()
