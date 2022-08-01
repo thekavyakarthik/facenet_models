@@ -26,7 +26,6 @@ class FacenetModel:
             These models will automatically place images on the
             appropriate device during their forwards passes."""
 
-        self._device = device
         self._device = device.lower()
         self._mtcnn = MTCNN(device=self._device)
         self._resnet = InceptionResnetV1(
